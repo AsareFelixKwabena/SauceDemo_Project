@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'Setting up Python environment on Windows...'
                 bat '''
-                    python -m venv venv
+                    "C:\\Users\\QWABENA EL\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m venv venv
                     call venv\\Scripts\\activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
