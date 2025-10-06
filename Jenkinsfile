@@ -1,25 +1,19 @@
 pipeline {
     agent any
 
-    environment {
-        // Optional: specify Python version or virtual environment if needed
-        PYTHON = 'python'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                // Pull code from GitHub
                 git branch: 'main', url: 'https://github.com/AsareFelixKwabena/SauceDemo_Project.git'
             }
         }
 
         stage('Set up Python') {
             steps {
-                echo 'Setting up Python environment...'
-                sh '''
+                echo 'Setting up Python environment on Windows...'
+                bat '''
                     python -m venv venv
-                    source venv/bin/activate
+                    call venv\\Scripts\\activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -29,9 +23,9 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running Selenium tests with Pytest...'
-                sh '''
-                    source venv/bin/activate
-                    pytest --maxfail=1 --disable-warnings --junitxml=reports/results.xml
+                bat '''
+                    call venv\\Scripts\\activate
+                    pytest --maxfail=1 --disable-warnings --junitxml=reports\\results.xml
                 '''
             }
         }
@@ -40,7 +34,7 @@ pipeline {
     post {
         always {
             echo 'Publishing test results...'
-            junit 'reports/results.xml'
+            junit 'reports\\results.xml'
         }
         success {
             echo '✅ Build succeeded! All tests passed.'
